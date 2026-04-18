@@ -1,0 +1,28 @@
+:root {
+  --cdme-scratch-bg: #eceef0;
+  --cdme-scratch-text: #1f2328;
+  --cdme-scratch-radius: 0.368rem;
+  --cdme-scratch-padding: 6px;
+}
+
+[data-theme='dark'] {
+  --cdme-scratch-bg: #1e232a;
+  --cdme-scratch-text: #f0f6fc;
+}
+
+mss {
+  background: var(--cdme-scratch-bg);
+  border-radius: var(--cdme-scratch-radius);
+  color: transparent;
+  transition: all 0.26s ease;
+  -moz-transition: all 0.26s ease;
+  -webkit-transition: all 0.26s ease;
+  -o-transition: all 0.26s ease;
+  cursor: pointer;
+  padding: 0 var(--cdme-scratch-padding);
+}
+
+mss:hover {
+  background: 0 0;
+  color: var(--cdme-scratch-text);
+}

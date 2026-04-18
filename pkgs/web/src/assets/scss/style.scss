@@ -1,0 +1,51 @@
+@use './theme.scss' as *;
+@use './size.scss' as *;
+@use './icons.scss' as *;
+@use './scratch.scss' as *;
+@use './element.scss' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--cdme-bg);
+  color: var(--cdme-text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: var(--cdme-bg);
+  border-radius: var(--cdme-radius);
+}
+
+body::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: var(--cdme-radius);
+  background-color: var(--cdme-scroll);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--cdme-scroll-hover);
+}
+
+.container {
+  box-sizing: border-box;
+  padding-top: var(--cdme-large);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+  .container {
+    padding-top: var(--cdme-medium);
+  }
+}

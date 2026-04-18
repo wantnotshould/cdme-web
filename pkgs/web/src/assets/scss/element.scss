@@ -1,0 +1,12 @@
+a {
+  text-decoration: none;
+  cursor: pointer;
+  text-underline-offset: 0.2rem;
+}
+
+p,
+span {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
