@@ -3,7 +3,7 @@ export interface InfoReq {
 }
 
 export interface DeleteReq {
-  ids: number[]
+  id: number
 }
 
 export interface PageReq {

@@ -17,7 +17,7 @@ const router = createRouter({
           path: '/',
           name: 'index',
           component: () => import('@/views/Index.vue'),
-          meta: { title: 'home', requiresAuth: true },
+          meta: { title: 'Home', requiresAuth: true },
         },
         {
           path: 'blog',
@@ -25,7 +25,21 @@ const router = createRouter({
           component: () => import('@/views/blog/Index.vue'),
           meta: { title: 'Blog', requiresAuth: true },
         },
-
+        {
+          path: 'blog-create',
+          name: 'blog-create',
+          component: () => import('@/views/blog/Create.vue'),
+          meta: { title: 'Create Blog', requiresAuth: true },
+        },
+        {
+          path: 'blog-update/:id',
+          name: 'blog-update',
+          props: (route: { params: { id: number } }) => ({
+            id: Number(route.params.id),
+          }),
+          component: () => import('@/views/blog/Update.vue'),
+          meta: { title: 'Update Blog', requiresAuth: true },
+        },
         {
           path: '/404',
           name: 'not-found',
