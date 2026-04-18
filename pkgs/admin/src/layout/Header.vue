@@ -1,7 +1,31 @@
 <script setup lang="ts">
+import { userLogout } from '@/api/handler/user'
 import { useUIState } from '@/stores/uiStore'
+import { useUserStore } from '@/stores/userStore'
 
 const uiState = useUIState()
+const router = useRouter()
+const userStore = useUserStore()
+const username = computed(() => userStore.username)
+
+const handlerUserLogout = async () => {
+  await ElMessageBox.confirm('确认要退出吗', '退出', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).catch(() => {
+    ElMessage.info('已取消退出')
+    return new Promise(() => {})
+  })
+  try {
+    await userLogout()
+  } catch {
+  } finally {
+    userStore.reset()
+  }
+  ElMessage.success('成功退出')
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -25,6 +49,26 @@ const uiState = useUIState()
         <i-ep-sunny v-if="uiState.isDark" />
         <i-ep-moon v-else />
       </el-icon>
+
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          <el-avatar :size="34">
+            <template #default>
+              <span>{{ username.charAt(0) }}</span>
+            </template>
+          </el-avatar>
+          <el-icon class="el-icon--right">
+            <i-ep-arrow-down />
+          </el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item divided @click="handlerUserLogout">
+              <el-icon><i-ep-switch-button /></el-icon> <span>退出</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </el-header>
 </template>
@@ -51,6 +95,21 @@ const uiState = useUIState()
     display: flex;
     align-items: center;
     justify-content: flex-end;
+  }
+
+  .el-dropdown-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+  }
+
+  .el-dropdown-menu {
+    min-width: 160px;
+  }
+
+  .el-avatar {
+    margin-right: 8px;
   }
 }
 </style>

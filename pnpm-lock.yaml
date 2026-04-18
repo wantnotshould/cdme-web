@@ -80,6 +80,12 @@ importers:
 
   pkgs/shared:
     dependencies:
+      axios:
+        specifier: ^1.15.0
+        version: 1.15.0
+      blakejs:
+        specifier: ^1.2.1
+        version: 1.2.1
       pinia:
         specifier: ^3.0.4
         version: 3.0.4(typescript@6.0.3)(vue@3.5.32(typescript@6.0.3))
@@ -743,6 +749,9 @@ packages:
 
   birpc@2.9.0:
     resolution: {integrity: sha512-KrayHS5pBi69Xi9JmvoqrIgYGDkD6mcSe/i6YKi3w5kekCLzrX4+nawcXqrj2tIp50Kw/mT/s3p+GVK0A0sKxw==}
+
+  blakejs@1.2.1:
+    resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -2368,6 +2377,8 @@ snapshots:
       - debug
 
   birpc@2.9.0: {}
+
+  blakejs@1.2.1: {}
 
   call-bind-apply-helpers@1.0.2:
     dependencies:

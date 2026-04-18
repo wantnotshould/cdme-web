@@ -16,16 +16,16 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background-color: var(--musei-bg);
-  border-radius: var(--musei-radius);
+  background-color: var(--cdme-bg);
+  border-radius: var(--cdme-radius);
 }
 
 body::-webkit-scrollbar-thumb {
   cursor: pointer;
-  border-radius: var(--musei-radius);
-  background-color: var(--musei-scroll);
+  border-radius: var(--cdme-radius);
+  background-color: var(--cdme-scroll);
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background-color: var(--musei-scroll-hover);
+  background-color: var(--cdme-scroll-hover);
 }
