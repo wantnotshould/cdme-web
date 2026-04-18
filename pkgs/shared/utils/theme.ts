@@ -1,8 +1,9 @@
 import type { PiniaPluginContext } from 'pinia'
 
 export const webUI = 'cdme_ui'
+export const adminUI = 'cdme_admin_ui'
 
-const uiStoreIds = [webUI]
+const uiStoreIds = [webUI, adminUI]
 
 export const applyTheme = (isDark: boolean) => {
   if (typeof document === 'undefined') return
