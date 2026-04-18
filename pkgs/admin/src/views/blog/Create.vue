@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import MdEditor from '@/components/MdEditor.vue'
 import { handlerBlogCreate } from '@/compositions/useBlog'
+import { useBlogOptions } from '@/compositions/useBlogOptions'
+import { BlogCategory, BlogStatus } from '@/enums/post'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -10,99 +12,83 @@ const router = useRouter()
 const formData = ref({
   title: '',
   slug: '',
-  category_id: 0,
+  category_id: BlogCategory.Essay,
   summary: '',
-  status: 1,
+  status: BlogStatus.Draft,
   content: '',
 })
 
 const handlerCreate = async () => {
-  const { title, slug, summary, category_id, status, content } = formData.value
-
-  const result = await handlerBlogCreate({
-    title,
-    slug,
-    summary,
-    category_id,
-    status,
-    content,
-  })
+  const result = await handlerBlogCreate(formData.value)
 
   if (result) {
-    ElMessage.success('success')
+    ElMessage.success('Success')
     router.push({ name: 'blog' })
   }
 }
 
-// 重置
 const handlerReset = () => {
   formData.value = {
     title: '',
     slug: '',
-    category_id: 0,
+    category_id: BlogCategory.Essay,
     summary: '',
-    status: 1,
+    status: BlogStatus.Draft,
     content: '',
   }
 }
+
+const { categoryOptions, statusOptions } = useBlogOptions()
 </script>
 
 <template>
   <el-card>
     <template #header>
-      <div class="card-header">
-        <span>Create Blog Post</span>
-      </div>
+      <span>写文章</span>
     </template>
 
-    <el-form :model="formData" label-width="120px" ref="blogCreateFormRef">
-      <el-form-item label="Title" prop="title">
-        <el-input v-model="formData.title" placeholder="Enter the title" autocomplete="off" />
+    <el-form :model="formData" label-width="120px">
+      <el-form-item label="Title">
+        <el-input v-model="formData.title" />
       </el-form-item>
 
-      <el-form-item label="Category" prop="category_id">
-        <el-select
-          v-model="formData.category_id"
-          placeholder="Select a category"
-          style="width: 200px"
-        >
-          <el-option label="Sharing" :value="1" />
-          <el-option label="Tech" :value="2" />
-          <el-option label="Essay" :value="3" />
-          <el-option label="Tutorial" :value="4" />
+      <el-form-item label="Category">
+        <el-select v-model="formData.category_id" placeholder="Select category">
+          <el-option
+            v-for="item in categoryOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Slug" prop="slug">
-        <el-input v-model="formData.slug" placeholder="Enter a URL-friendly slug" clearable />
+      <el-form-item label="Slug">
+        <el-input v-model="formData.slug" />
       </el-form-item>
 
-      <el-form-item label="Summary" prop="summary">
-        <el-input
-          v-model="formData.summary"
-          type="textarea"
-          placeholder="Enter a brief summary"
-          :rows="3"
-          clearable
-        />
+      <el-form-item label="Summary">
+        <el-input type="textarea" v-model="formData.summary" />
       </el-form-item>
 
-      <el-form-item label="Status" prop="status">
-        <el-select v-model="formData.status" placeholder="Select status" style="width: 200px">
-          <el-option label="Draft" :value="1" />
-          <el-option label="Published" :value="2" />
-          <el-option label="Under Review" :value="3" />
-          <el-option label="Private" :value="4" />
+      <el-form-item label="Status">
+        <el-select v-model="formData.status">
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Content" prop="content">
+      <el-form-item label="Content">
         <MdEditor v-model="formData.content" height="400px" />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="handlerCreate"> Save </el-button>
-        <el-button @click="handlerReset"> Reset </el-button>
+        <el-button type="primary" @click="handlerCreate"> 创建 </el-button>
+        <el-button @click="handlerReset"> 重置 </el-button>
       </el-form-item>
     </el-form>
   </el-card>

@@ -12,10 +12,10 @@ const uiState = useUIState()
         <h1>cdme</h1>
       </a>
       <el-menu-item index="/">
-        <el-icon><i-ep-guide /></el-icon><span>Home</span>
+        <el-icon><i-ep-guide /></el-icon><span>首页</span>
       </el-menu-item>
       <el-menu-item index="/blog">
-        <el-icon><i-ep-memo /></el-icon><span>Blog</span>
+        <el-icon><i-ep-memo /></el-icon><span>博客</span>
       </el-menu-item>
     </el-menu>
   </el-aside>

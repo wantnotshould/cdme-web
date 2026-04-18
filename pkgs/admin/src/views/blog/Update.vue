@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import MdEditor from '@/components/MdEditor.vue'
 import { blogInfoRes, handlerBlogUpdate, queryBlogInfo } from '@/compositions/useBlog'
+import { useBlogOptions } from '@/compositions/useBlogOptions'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 const props = defineProps({
   id: {
     type: Number,
@@ -12,20 +14,25 @@ const props = defineProps({
   },
 })
 
+const { categoryOptions, statusOptions } = useBlogOptions()
+
+// load data
 queryBlogInfo({ id: props.id })
 
 const handlerUpdate = async () => {
-  const result = await handlerBlogUpdate(blogInfoRes.value.id, {
-    title: blogInfoRes.value.title,
-    slug: blogInfoRes.value.slug,
-    summary: blogInfoRes.value.summary,
-    category_id: blogInfoRes.value.category_id,
-    content: blogInfoRes.value.content,
-    status: blogInfoRes.value.status,
+  const data = blogInfoRes.value
+
+  const result = await handlerBlogUpdate(data.id, {
+    title: data.title,
+    slug: data.slug,
+    summary: data.summary,
+    category_id: data.category_id,
+    content: data.content,
+    status: data.status,
   })
 
   if (result) {
-    ElMessage.success('success')
+    ElMessage.success('Success')
     router.push({ name: 'blog' })
   }
 }
@@ -35,26 +42,23 @@ const handlerUpdate = async () => {
   <el-card>
     <template #header>
       <div class="card-header">
-        <span>Edit Blog Post</span>
+        <span>更新文章</span>
       </div>
     </template>
 
-    <el-form :model="blogInfoRes" label-width="120px" ref="editFormRef">
-      <el-form-item label="Title" prop="title">
-        <el-input v-model="blogInfoRes.title" placeholder="Enter the title" autocomplete="off" />
+    <el-form :model="blogInfoRes" label-width="120px">
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="blogInfoRes.title" placeholder="输入标题" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item label="Category" prop="category_id">
-        <el-select
-          v-model="blogInfoRes.category_id"
-          placeholder="Select a category"
-          style="width: 200px"
-        >
-          <el-option label="Unselected" :value="0" />
-          <el-option label="Sharing" :value="1" />
-          <el-option label="Tech" :value="2" />
-          <el-option label="Essay" :value="3" />
-          <el-option label="Tutorial" :value="4" />
+      <el-form-item label="分类" prop="category_id">
+        <el-select v-model="blogInfoRes.category_id" style="width: 200px" clearable>
+          <el-option
+            v-for="item in categoryOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
 
@@ -62,32 +66,34 @@ const handlerUpdate = async () => {
         <el-input v-model="blogInfoRes.slug" placeholder="Enter a URL-friendly slug" clearable />
       </el-form-item>
 
-      <el-form-item label="Summary" prop="summary">
+      <el-form-item label="描述" prop="summary">
         <el-input
           v-model="blogInfoRes.summary"
           type="textarea"
           :rows="3"
-          placeholder="Enter a brief summary"
+          placeholder="输入描述信息"
           clearable
         />
       </el-form-item>
 
-      <el-form-item label="Status" prop="status">
+      <el-form-item label="状态" prop="status">
         <el-select v-model="blogInfoRes.status" placeholder="Select status" style="width: 200px">
-          <el-option label="Draft" :value="1" />
-          <el-option label="Under Review" :value="2" />
-          <el-option label="Published" :value="3" />
-          <el-option label="Private" :value="4" />
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Content" prop="content">
+      <el-form-item label="内容" prop="content">
         <MdEditor v-model="blogInfoRes.content" height="400px" />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="handlerUpdate"> Save </el-button>
-        <el-button @click="router.push({ name: 'blog' })"> Cancel </el-button>
+        <el-button type="primary" @click="handlerUpdate"> 更新 </el-button>
+        <el-button @click="router.push({ name: 'blog' })"> 取消 </el-button>
       </el-form-item>
     </el-form>
   </el-card>

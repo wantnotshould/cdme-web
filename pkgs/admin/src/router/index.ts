@@ -7,7 +7,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('@/views/Login.vue'),
-      meta: { requiresAuth: false, title: 'Login' },
+      meta: { requiresAuth: false, title: '登录' },
     },
     {
       path: '/',
@@ -17,19 +17,19 @@ const router = createRouter({
           path: '/',
           name: 'index',
           component: () => import('@/views/Index.vue'),
-          meta: { title: 'Home', requiresAuth: true },
+          meta: { title: '首页', requiresAuth: true },
         },
         {
           path: 'blog',
           name: 'blog',
           component: () => import('@/views/blog/Index.vue'),
-          meta: { title: 'Blog', requiresAuth: true },
+          meta: { title: '博客', requiresAuth: true },
         },
         {
           path: 'blog-create',
           name: 'blog-create',
           component: () => import('@/views/blog/Create.vue'),
-          meta: { title: 'Create Blog', requiresAuth: true },
+          meta: { title: '写文章', requiresAuth: true },
         },
         {
           path: 'blog-update/:id',
@@ -38,13 +38,13 @@ const router = createRouter({
             id: Number(route.params.id),
           }),
           component: () => import('@/views/blog/Update.vue'),
-          meta: { title: 'Update Blog', requiresAuth: true },
+          meta: { title: '更新文章', requiresAuth: true },
         },
         {
           path: '/404',
           name: 'not-found',
           component: () => import('@/views/pages/NotFound.vue'),
-          meta: { title: 'Not Found' },
+          meta: { title: '资源不存在' },
         },
         {
           // https://router.vuejs.org/zh/guide/essentials/dynamic-matching.html
