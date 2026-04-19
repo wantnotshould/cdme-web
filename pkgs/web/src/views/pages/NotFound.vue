@@ -25,11 +25,7 @@
   font-size: 1.6rem;
 
   .terminal {
-    position: relative;
     color: var(--cdme-text);
-    padding: 1rem;
-    border-radius: var(--cdme-radius);
-    border: 1px solid var(--cdme-border);
 
     .error {
       color: var(--cdme-404-error);
