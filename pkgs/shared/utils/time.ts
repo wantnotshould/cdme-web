@@ -19,3 +19,30 @@ export const timeFormatFromISO = (value?: string | null, empty = ''): string => 
     .format(date)
     .replace(/\//g, '-')
 }
+
+export const timeFormat = (
+  _row: any,
+  _column: any,
+  value: string | number | Date | null | undefined,
+  _index?: number,
+  empty: string = ''
+): string => {
+  if (!value) return empty
+
+  let isoString: string
+
+  if (value instanceof Date) {
+    if (isNaN(value.getTime()) || value.getTime() === 0) return empty
+    isoString = value.toISOString()
+  } else if (typeof value === 'number') {
+    const date = new Date(value)
+    if (isNaN(date.getTime()) || date.getTime() === 0) return empty
+    isoString = date.toISOString()
+  } else if (typeof value === 'string') {
+    isoString = value
+  } else {
+    return empty
+  }
+
+  return timeFormatFromISO(isoString, empty)
+}

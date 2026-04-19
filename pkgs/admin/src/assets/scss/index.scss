@@ -1,0 +1,31 @@
+// Fix: Deprecation Warning [import]:
+// Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+@use './style.scss' as *;
+@use './size.scss' as *;
+@use './scratch.scss' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  // Width stays fixed regardless of padding or border
+  box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: var(--cdme-bg);
+  border-radius: var(--cdme-radius);
+}
+
+body::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: var(--cdme-radius);
+  background-color: var(--cdme-scroll);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--cdme-scroll-hover);
+}
