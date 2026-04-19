@@ -54,6 +54,7 @@ export const useUserStore = defineStore('pinia-user', {
           }
         } catch (err) {
           handlerError(err)
+          this.info = null
           return null
         } finally {
           this.loading = false

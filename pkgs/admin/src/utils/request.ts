@@ -27,47 +27,48 @@ request.interceptors.request.use(config => {
 })
 
 let isRefreshing = false
-let failedQueue: (() => void)[] = []
+let failedQueue: Array<(token: string) => void> = []
 
 request.interceptors.response.use(
-  response => {
-    return response
-  },
+  response => response,
   async error => {
     const { response, config } = error
     const userStore = useUserStore()
 
-    if (response && response.status === 401) {
-      if (isRefreshing) {
-        return new Promise(resolve => {
-          failedQueue.push(() => {
-            resolve(request(config))
-          })
-        })
-      }
-
-      isRefreshing = true
-
-      try {
-        const { data } = await userRefreshToken()
-        if (data.status) {
-          failedQueue.forEach(callback => callback())
-          failedQueue = []
-        } else {
-          userStore.reset()
-          router.push({ name: 'login' })
-          return Promise.reject(error)
-        }
-      } catch (refreshError) {
-        userStore.reset()
-        router.push({ name: 'login' })
-        return Promise.reject(refreshError)
-      } finally {
-        isRefreshing = false
-      }
+    if (!response || response.status !== 401) {
+      return Promise.reject(error)
     }
 
-    return Promise.reject(error)
+    if (config.url?.includes('/refresh-token')) {
+      userStore.reset()
+      router.replace({ name: 'login' })
+      return Promise.reject(error)
+    }
+
+    if (isRefreshing) {
+      return new Promise(resolve => {
+        failedQueue.push((token: string) => {
+          resolve(request(config))
+        })
+      })
+    }
+
+    isRefreshing = true
+
+    try {
+      const { data } = await userRefreshToken()
+
+      if (!data.status) {
+        throw new Error('refresh failed')
+      }
+      return request(config)
+    } catch (err) {
+      userStore.reset()
+      router.replace({ name: 'login' })
+      return Promise.reject(err)
+    } finally {
+      isRefreshing = false
+    }
   }
 )
 

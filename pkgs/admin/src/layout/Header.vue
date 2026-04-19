@@ -2,6 +2,7 @@
 import { userLogout } from '@/api/handler/user'
 import { useUIState } from '@/stores/uiStore'
 import { useUserStore } from '@/stores/userStore'
+import { removeItem } from '@blog/shared'
 
 const uiState = useUIState()
 const router = useRouter()
@@ -22,6 +23,7 @@ const handlerUserLogout = async () => {
   } catch {
   } finally {
     userStore.reset()
+    removeItem('pinia-user')
   }
   ElMessage.success('成功退出')
   router.push('/login')

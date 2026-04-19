@@ -59,7 +59,12 @@ const handlerUpdate = async () => {
       </div>
     </template>
 
-    <el-form :model="postInfoRes" label-width="120px" ref="postUpdateFormRef" :rules="postSaveRules(true)">
+    <el-form
+      :model="postInfoRes"
+      label-width="120px"
+      ref="postUpdateFormRef"
+      :rules="postSaveRules(true)"
+    >
       <el-form-item label="标题" prop="title">
         <el-input v-model="postInfoRes.title" placeholder="输入标题" autocomplete="off" />
       </el-form-item>

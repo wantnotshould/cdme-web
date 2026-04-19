@@ -33,7 +33,7 @@ export const queryPostCategory = async () => {
       throw new Error(data.message)
     }
   } catch (err) {
-  } finally {
+    handlerError(err)
   }
 }
 
@@ -47,7 +47,7 @@ export const queryPostStatus = async () => {
       throw new Error(data.message)
     }
   } catch (err) {
-  } finally {
+    handlerError(err)
   }
 }
 
@@ -63,36 +63,43 @@ export const postListRes = ref<PageContent<PostListItemResp>>({
   content: [],
 })
 export const queryPostListFormRef = ref<FormInstance>()
-export const queryPostList = async (param: PostListReq = { page: 1, per_page: 20 }) => {
+
+const validateForm = async (formRef: FormInstance | undefined) => {
   try {
-    await queryPostListFormRef.value?.validate()
+    await formRef?.validate()
   } catch (err) {
     handlerFormValidationError(err)
-    return
+    return false
   }
+  return true
+}
+
+export const queryPostList = async (param: PostListReq = { page: 1, per_page: 20 }) => {
+  const isValid = await validateForm(queryPostListFormRef.value)
+  if (!isValid) return
 
   postListLoading.value = true
-
   Object.assign(postListCond, param)
 
   try {
     const { data } = await postList(param)
-
     if (data.status) {
       postListRes.value = data.data
     } else {
       throw new Error(data.message)
     }
   } catch (err) {
-    handlerError?.(err)
+    handlerError(err)
   } finally {
     postListLoading.value = false
   }
 }
+
 export const handlerPostPageChange = (page: number) => {
   postListCond.page = page
   queryPostList(postListCond)
 }
+
 export const handlerPostPerPageChange = (perPage: number) => {
   postListCond.per_page = perPage
   handlerPostPageChange(1)
@@ -109,6 +116,7 @@ export const postInfoRes = ref<PostInfoResp>({
   status: 1,
   created_at: '',
 })
+
 export const queryPostInfo = async (param: InfoReq) => {
   postInfoLoading.value = true
   try {
@@ -119,6 +127,7 @@ export const queryPostInfo = async (param: InfoReq) => {
       throw new Error(data.message)
     }
   } catch (err) {
+    handlerError(err)
   } finally {
     postInfoLoading.value = false
   }
@@ -126,16 +135,12 @@ export const queryPostInfo = async (param: InfoReq) => {
 
 export const postCreateLoading = ref(false)
 export const postCreateFormRef = ref<FormInstance>()
+
 export const handlerPostCreate = async (param: PostCreateReq) => {
-  try {
-    await postCreateFormRef.value?.validate()
-  } catch (err) {
-    handlerFormValidationError(err)
-    return false
-  }
+  const isValid = await validateForm(postCreateFormRef.value)
+  if (!isValid) return false
 
   postCreateLoading.value = true
-
   try {
     const { data } = await postCreate(param)
     return !!data.status
@@ -149,16 +154,12 @@ export const handlerPostCreate = async (param: PostCreateReq) => {
 
 export const postUpdateLoading = ref(false)
 export const postUpdateFormRef = ref<FormInstance>()
+
 export const handlerPostUpdate = async (id: number, param: PostUpdateReq) => {
-  try {
-    await postUpdateFormRef.value?.validate()
-  } catch (err) {
-    handlerFormValidationError(err)
-    return false
-  }
+  const isValid = await validateForm(postUpdateFormRef.value)
+  if (!isValid) return false
 
   postUpdateLoading.value = true
-
   try {
     const { data } = await postUpdate(id, param)
     if (data.status) {
@@ -195,9 +196,8 @@ export const handlerPostDelete = async (param: DeleteReq) => {
     }
   } catch (err) {
     handlerError(err)
-    return false
   } finally {
     postDeleteLoading.value = false
-    queryPostList()
+    queryPostList(postListCond)
   }
 }

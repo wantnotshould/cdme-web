@@ -8,7 +8,6 @@ import {
   queryPostCategory,
   queryPostStatus,
 } from '@/compositions/useBlog'
-import { BlogCategory, BlogStatus } from '@/enums/post'
 import { postSaveRules } from '@/rules/post'
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
@@ -19,9 +18,9 @@ const router = useRouter()
 const formData = ref({
   title: '',
   slug: '',
-  category_id: BlogCategory.Essay,
+  category_id: 1,
   summary: '',
-  status: BlogStatus.Draft,
+  status: 1,
   content: '',
 })
 
